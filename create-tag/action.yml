@@ -36,7 +36,7 @@ runs:
             const foo = await github.rest.git.getRef({
               owner: owner,
               repo: repo,
-              ref: `tags/${tag}`
+              ref: `tags/faosdoadomakndsajklb`
             });
             if (foo.status !== 200) {
               core.setFailed(`listMatchingRefs response: ${JSON.stringify(foo)}`);
@@ -46,12 +46,13 @@ runs:
             const response = await github.rest.git.listMatchingRefs({
               owner: owner,
               repo: repo,
-              ref: `tags/faosdoadomakndsajklb`
+              ref: `tags/${tag}`
             });
             if (response.status !== 200) {
               core.setFailed(`listMatchingRefs response: ${JSON.stringify(response)}`);
               return;
             }
+            console.log(response);
             const existing = response.data.some(existingTag => existingTag.ref === `refs/tags/${tag}`);
 
             if (existing) {
