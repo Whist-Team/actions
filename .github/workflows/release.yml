@@ -19,7 +19,7 @@ jobs:
             try {
               const version = context.ref.substring('refs/tags/v'.length);
               const [major, minor, patch] = version.split('.');
-              core version = {
+              const version = {
                 major: major,
                 minor: minor,
                 patch: patch
