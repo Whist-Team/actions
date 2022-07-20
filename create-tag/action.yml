@@ -38,6 +38,7 @@ runs:
               repo: repo,
               ref: `tags/${tag}`
             });
+            console.log(tags);
             const existing = tags.some(existingTag => existingTag === `refs/tags/${tag}`);
 
             if (existing) {
