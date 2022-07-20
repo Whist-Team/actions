@@ -33,14 +33,26 @@ runs:
             const sha = '${{ inputs.sha }}';
             const replace = /^true$/i.test('${{ inputs.replace }}');
 
-            const tags = await github.rest.git.listMatchingRefs({
+            const foo = await github.rest.git.getRef({
               owner: owner,
               repo: repo,
               ref: `tags/${tag}`
             });
-            console.log(tags);
-            console.log(JSON.stringify(tags));
-            const existing = tags.some(existingTag => existingTag === `refs/tags/${tag}`);
+            if (foo.status !== 200) {
+              core.setFailed(`listMatchingRefs response: ${JSON.stringify(foo)}`);
+              return;
+            }
+
+            const response = await github.rest.git.listMatchingRefs({
+              owner: owner,
+              repo: repo,
+              ref: `tags/${tag}`
+            });
+            if (response.status !== 200) {
+              core.setFailed(`listMatchingRefs response: ${JSON.stringify(response)}`);
+              return;
+            }
+            const existing = response.data.some(existingTag => existingTag === `refs/tags/${tag}`);
 
             if (existing) {
               if (!replace) {
@@ -48,20 +60,29 @@ runs:
                 return;
               }
               
-              await github.rest.git.updateRef({
+              const result = await github.rest.git.updateRef({
                 owner: owner,
                 repo: repo,
                 ref: `tags/${tag}`,
                 sha: sha
               });
+              if (result.status !== 200) {
+                core.setFailed(`updateRef response: ${JSON.stringify(result)}`);
+                return;
+              }
             } else{
-              await github.rest.git.createRef({
+              const result = await github.rest.git.createRef({
                 owner: owner,
                 repo: repo,
                 ref: `refs/tags/${tag}`,
                 sha: sha
               });
+              if (result.status !== 200) {
+                core.setFailed(`createRef response: ${JSON.stringify(result)}`);
+                return;
+              }
             }
           } catch (err) {
             core.setFailed(`Action failed with error ${err}`);
+            return;
           }
