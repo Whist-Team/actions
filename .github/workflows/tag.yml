@@ -13,26 +13,7 @@ jobs:
 
       - name: 'Extract version info'
         id: version
-        uses: actions/github-script@v6
-        with:
-          script: |
-            try {
-              const version = context.ref.substring('refs/tags/v'.length);
-              const [major, minor, patch] = version.split('.');
-              const semver = {
-                major: major,
-                minor: minor,
-                patch: patch
-              };
-            
-              core.info(`Version: ${JSON.stringify(semver)}`);
-            
-              for (const [key, value] of Object.entries(semver)) {
-                core.setOutput(key, value);
-              }
-            } catch (err) {
-              core.setFailed(`Action failed with error ${err}`);
-            }
+        uses: ./extract-semver
 
       - name: 'Create major tag'
         uses: ./create-tag
