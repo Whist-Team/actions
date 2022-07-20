@@ -39,7 +39,7 @@ jobs:
         with:
           tag: 'v${{ steps.version.outputs.major }}'
           sha: ${{ github.sha }}
-          replace: true
+          replace: false
 
       - name: 'Create major.minor tag'
         uses: ./create-tag
