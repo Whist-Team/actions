@@ -46,7 +46,7 @@ runs:
             const response = await github.rest.git.listMatchingRefs({
               owner: owner,
               repo: repo,
-              ref: `tags/${tag}`
+              ref: `tags/faosdoadomakndsajklb`
             });
             if (response.status !== 200) {
               core.setFailed(`listMatchingRefs response: ${JSON.stringify(response)}`);
@@ -70,7 +70,7 @@ runs:
                 core.setFailed(`updateRef response: ${JSON.stringify(result)}`);
                 return;
               }
-            } else{
+            } else {
               const result = await github.rest.git.createRef({
                 owner: owner,
                 repo: repo,
