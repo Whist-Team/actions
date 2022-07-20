@@ -1,0 +1,40 @@
+name: Add semver tags on release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  apply-tags:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: 'Create tags'
+        id: version
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const ref = context.ref;
+            const version = context.substring('refs/tags/v'.length);
+            const split = version.split('.');
+            console.log(JSON.stringify(split));
+
+      - uses: actions/github-script@v6
+        name: 'Create tags'
+        with:
+          script: |
+            /*github.rest.git.createRef({
+              owner: '${{ github.repository_owner }}',
+              repo: '${{ github.repository }}',
+              ref: 'refs/tags/v${{ steps.version.outputs.major }}',
+              sha: '${{ github.sha }}'
+            });
+            github.rest.git.createRef({
+              owner: '${{ github.repository_owner }}',
+              repo: '${{ github.repository }}',
+              ref: 'refs/tags/v${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}',
+              sha: '${{ github.sha }}'
+            });*/
+            console.log('v${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}');
