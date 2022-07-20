@@ -14,7 +14,8 @@ inputs:
     required: true
   sha:
     description: 'SHA'
-    required: true
+    required: false
+    default: ''
   replace:
     description: 'Replace existing Tag'
     required: false
@@ -29,7 +30,7 @@ runs:
           try {
             const owner = '${{ inputs.owner }}' || context.repo.owner;
             const repo = '${{ inputs.repo }}' || context.repo.repo;
-            const tag = '${{ inputs.tag }}';
+            const tag = '${{ inputs.tag }}' || context.sha;
             const sha = '${{ inputs.sha }}';
             const replace = /^true$/i.test('${{ inputs.replace }}');
 

@@ -38,12 +38,10 @@ jobs:
         uses: ./create-tag
         with:
           tag: 'v${{ steps.version.outputs.major }}'
-          sha: ${{ github.sha }}
           replace: true
 
       - name: 'Create major.minor tag'
         uses: ./create-tag
         with:
           tag: 'v${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}'
-          sha: ${{ github.sha }}
           replace: true
