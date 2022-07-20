@@ -39,7 +39,7 @@ jobs:
         with:
           script: |
             try {
-              /*github.rest.git.createRef({
+              github.rest.git.createRef({
                 owner: '${{ github.repository_owner }}',
                 repo: '${{ github.repository }}',
                 ref: 'refs/tags/v${{ steps.version.outputs.major }}',
@@ -50,8 +50,7 @@ jobs:
                 repo: '${{ github.repository }}',
                 ref: 'refs/tags/v${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}',
                 sha: '${{ github.sha }}'
-              });*/
-              core.info('v${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}');
+              });
             } catch (err) {
               core.setFailed(`Action failed with error ${err}`);
             }
