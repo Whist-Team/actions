@@ -1,0 +1,52 @@
+name: 'Create Git Tags'
+description: 'Creates Git Tags, can replace existing tags'
+inputs:
+  owner:
+    description: 'Owner'
+    required: false
+    default: ''
+  repo:
+    description: 'Repository'
+    required: false
+    default: ''
+  tag:
+    description: 'Tag'
+    required: true
+  sha:
+    description: 'SHA'
+    required: true
+  replace:
+    description: 'Replace existing Tag'
+    required: false
+    default: 'false'
+runs:
+  using: composite
+  steps:
+    - name: 'Create tag ${{ inputs.tag }}'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          try {
+            const owner = '${{ inputs.owner }}' || context.repo.owner;
+            const repo = '${{ inputs.repo }}' || context.repo.repo;
+            const ref = 'refs/tags/${{ inputs.tag }}';
+            const sha = '${{ inputs.sha }}';
+            const replace = /^true$/i.test('${{ inputs.replace }}');
+
+            if (replace) {
+              github.rest.git.deleteRef({
+                owner: owner,
+                repo: repo,
+                ref: ref
+              });
+            }
+
+            github.rest.git.createRef({
+              owner: owner,
+              repo: repo,
+              ref: ref,
+              sha: sha
+            });
+          } catch (err) {
+            core.setFailed(`Action failed with error ${err}`);
+          }

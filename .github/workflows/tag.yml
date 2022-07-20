@@ -34,27 +34,16 @@ jobs:
               core.setFailed(`Action failed with error ${err}`);
             }
 
-      - name: 'Create tags'
-        uses: actions/github-script@v6
+      - name: 'Create major tag'
+        uses: ./create-tag
         with:
-          script: |
-            try {
-              const major = ${{ steps.version.outputs.major }};
-              const minor = ${{ steps.version.outputs.minor }};
-              const patch = ${{ steps.version.outputs.patch }};
-              const {owner, repo} = context.repo;
-              github.rest.git.createRef({
-                owner: owner,
-                repo: repo,
-                ref: `refs/tags/v${major}`,
-                sha: context.sha
-              });
-              github.rest.git.createRef({
-                owner: owner,
-                repo: repo,
-                ref: `refs/tags/v${major}.${minor}`,
-                sha: context.sha
-              });
-            } catch (err) {
-              core.setFailed(`Action failed with error ${err}`);
-            }
+          tag: 'v${{ steps.version.outputs.major }}'
+          sha: ${{ github.sha }}
+          replace: true
+
+      - name: 'Create major.minor tag'
+        uses: ./create-tag
+        with:
+          tag: 'v${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}'
+          sha: ${{ github.sha }}
+          replace: true
