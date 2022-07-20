@@ -46,7 +46,7 @@ runs:
                 core.setFailed(`Given tag ${tag} already exists`);
                 return;
               }
-              
+
               core.info(`Given tag ${tag} already exists, updating...`);
               await github.rest.git.updateRef({
                 owner: owner,

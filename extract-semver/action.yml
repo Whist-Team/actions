@@ -26,25 +26,25 @@ runs:
           try {
             const versionOrRef = '${{ inputs.version }}' || context.ref;
             core.info(`Input: ${versionOrRef}`);
-          
+
             const refSplit = versionOrRef.split('/', 3);
             const versionWithV = refSplit[refSplit.length - 1];
             const version = versionWithV.startsWith('v') || versionWithV.startsWith('V') ? versionWithV.substring(1) : versionWithV;
             core.info(`Version string: ${version}`);
-          
+
             const versionSplit = version.split('.');
             if (versionSplit.length != 3) {
               core.setFailed(`${version} is not a valid SemVer`);
               return;
             }
-            
+
             const [major, minor, patch] = versionSplit;
             const semver = {
               major: major,
               minor: minor,
               patch: patch
             };
-            
+
             core.info(`SemVer: ${JSON.stringify(semver, null, 2)}`);
             for (const [key, value] of Object.entries(semver)) {
               core.setOutput(key, value);
