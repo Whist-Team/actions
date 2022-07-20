@@ -47,6 +47,7 @@ runs:
                 return;
               }
               
+              core.info(`Given tag ${tag} already exists, updating...`);
               await github.rest.git.updateRef({
                 owner: owner,
                 repo: repo,
@@ -54,6 +55,7 @@ runs:
                 sha: sha
               });
             } else {
+              core.info(`Creating new tag ${tag}.`);
               await github.rest.git.createRef({
                 owner: owner,
                 repo: repo,
