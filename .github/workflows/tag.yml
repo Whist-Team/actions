@@ -28,7 +28,7 @@ jobs:
               core.info(`Version: ${semver}`);
             
               for (const [key, value] of Object.entries(semver)) {
-                core.setOutputs(key, value);
+                core.setOutput(key, value);
               }
             } catch (err) {
               core.setFailed(`Action failed with error ${err}`);
