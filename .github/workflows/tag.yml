@@ -11,16 +11,16 @@ jobs:
     steps:
       - name: 'Extract version info'
         id: version
-        uses: Whist-Team/actions/extract-semver@v1
+        uses: Whist-Team/actions/extract-semver@v2
 
       - name: 'Create major tag'
-        uses: Whist-Team/actions/create-tag@v1
+        uses: Whist-Team/actions/create-tag@v2
         with:
           tag: 'v${{ steps.version.outputs.major }}'
           replace: true
 
       - name: 'Create major.minor tag'
-        uses: Whist-Team/actions/create-tag@v1
+        uses: Whist-Team/actions/create-tag@v2
         with:
           tag: 'v${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}'
           replace: true
