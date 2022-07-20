@@ -18,20 +18,20 @@ jobs:
           script: |
             try {
               const version = context.ref.substring('refs/tags/v'.length);
-              const split = version.split('.');
+              const [major, minor, patch] = version.split('.');
               core version = {
-                major: split[0],
-                minor: split[1],
-                patch: split[2],
-              }
+                major: major,
+                minor: minor,
+                patch: patch
+              };
             
-              core.info(`Version: ${version}`)
+              core.info(`Version: ${version}`);
             
               for (const [key, value] of Object.entries(version)) {
                 core.setOutputs(key, value);
               }
             } catch (err) {
-              core.setFailed(`Action failed with error ${err}`)
+              core.setFailed(`Action failed with error ${err}`);
             }
 
       - uses: actions/github-script@v6
@@ -53,5 +53,5 @@ jobs:
               });*/
               console.log('v${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}');
             } catch (err) {
-              core.setFailed(`Action failed with error ${err}`)
+              core.setFailed(`Action failed with error ${err}`);
             }
