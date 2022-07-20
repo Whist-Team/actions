@@ -33,12 +33,13 @@ runs:
             const sha = '${{ inputs.sha }}';
             const replace = /^true$/i.test('${{ inputs.replace }}');
 
-            const tags = github.rest.git.listMatchingRefs({
+            const tags = await github.rest.git.listMatchingRefs({
               owner: owner,
               repo: repo,
               ref: `tags/${tag}`
             });
             console.log(tags);
+            console.log(JSON.stringify(tags));
             const existing = tags.some(existingTag => existingTag === `refs/tags/${tag}`);
 
             if (existing) {
@@ -47,14 +48,14 @@ runs:
                 return;
               }
               
-              github.rest.git.updateRef({
+              await github.rest.git.updateRef({
                 owner: owner,
                 repo: repo,
                 ref: `tags/${tag}`,
                 sha: sha
               });
             } else{
-              github.rest.git.createRef({
+              await github.rest.git.createRef({
                 owner: owner,
                 repo: repo,
                 ref: `refs/tags/${tag}`,
