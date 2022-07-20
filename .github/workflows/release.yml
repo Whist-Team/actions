@@ -16,8 +16,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const ref = context.ref;
-            const version = context.substring('refs/tags/v'.length);
+            const version = context.ref.substring('refs/tags/v'.length);
             const split = version.split('.');
             console.log(JSON.stringify(split));
 
