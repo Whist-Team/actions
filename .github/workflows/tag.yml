@@ -19,15 +19,15 @@ jobs:
             try {
               const version = context.ref.substring('refs/tags/v'.length);
               const [major, minor, patch] = version.split('.');
-              const version = {
+              const semver = {
                 major: major,
                 minor: minor,
                 patch: patch
               };
             
-              core.info(`Version: ${version}`);
+              core.info(`Version: ${semver}`);
             
-              for (const [key, value] of Object.entries(version)) {
+              for (const [key, value] of Object.entries(semver)) {
                 core.setOutputs(key, value);
               }
             } catch (err) {
