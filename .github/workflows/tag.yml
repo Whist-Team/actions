@@ -25,7 +25,7 @@ jobs:
                 patch: patch
               };
             
-              core.info(`Version: ${semver}`);
+              core.info(`Version: ${JSON.stringify(semver)}`);
             
               for (const [key, value] of Object.entries(semver)) {
                 core.setOutput(key, value);
