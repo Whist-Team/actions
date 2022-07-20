@@ -9,20 +9,18 @@ jobs:
   apply-tags:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-
       - name: 'Extract version info'
         id: version
-        uses: ./extract-semver
+        uses: Whist-Team/actions/extract-semver@v1
 
       - name: 'Create major tag'
-        uses: ./create-tag
+        uses: Whist-Team/actions/create-tag@v1
         with:
           tag: 'v${{ steps.version.outputs.major }}'
           replace: true
 
       - name: 'Create major.minor tag'
-        uses: ./create-tag
+        uses: Whist-Team/actions/create-tag@v1
         with:
           tag: 'v${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}'
           replace: true
