@@ -16,24 +16,42 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const version = context.ref.substring('refs/tags/v'.length);
-            const split = version.split('.');
-            console.log(JSON.stringify(split));
+            try {
+              const version = context.ref.substring('refs/tags/v'.length);
+              const split = version.split('.');
+              core version = {
+                major: split[0],
+                minor: split[1],
+                patch: split[2],
+              }
+            
+              core.info(`Version: ${version}`)
+            
+              for (const [key, value] of Object.entries(version)) {
+                core.setOutputs(key, value);
+              }
+            } catch (err) {
+              core.setFailed(`Action failed with error ${err}`)
+            }
 
       - uses: actions/github-script@v6
         name: 'Create tags'
         with:
           script: |
-            /*github.rest.git.createRef({
-              owner: '${{ github.repository_owner }}',
-              repo: '${{ github.repository }}',
-              ref: 'refs/tags/v${{ steps.version.outputs.major }}',
-              sha: '${{ github.sha }}'
-            });
-            github.rest.git.createRef({
-              owner: '${{ github.repository_owner }}',
-              repo: '${{ github.repository }}',
-              ref: 'refs/tags/v${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}',
-              sha: '${{ github.sha }}'
-            });*/
-            console.log('v${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}');
+            try {
+              /*github.rest.git.createRef({
+                owner: '${{ github.repository_owner }}',
+                repo: '${{ github.repository }}',
+                ref: 'refs/tags/v${{ steps.version.outputs.major }}',
+                sha: '${{ github.sha }}'
+              });
+              github.rest.git.createRef({
+                owner: '${{ github.repository_owner }}',
+                repo: '${{ github.repository }}',
+                ref: 'refs/tags/v${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}',
+                sha: '${{ github.sha }}'
+              });*/
+              console.log('v${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}');
+            } catch (err) {
+              core.setFailed(`Action failed with error ${err}`)
+            }
