@@ -30,8 +30,8 @@ runs:
           try {
             const owner = '${{ inputs.owner }}' || context.repo.owner;
             const repo = '${{ inputs.repo }}' || context.repo.repo;
-            const tag = '${{ inputs.tag }}' || context.sha;
-            const sha = '${{ inputs.sha }}';
+            const tag = '${{ inputs.tag }}';
+            const sha = '${{ inputs.sha }}' || context.sha;
             const replace = /^true$/i.test('${{ inputs.replace }}');
 
             const { data: tags } = await github.rest.git.listMatchingRefs({
