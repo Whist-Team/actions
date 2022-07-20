@@ -33,13 +33,24 @@ runs:
             const sha = '${{ inputs.sha }}';
             const replace = /^true$/i.test('${{ inputs.replace }}');
 
-            if (replace) {
+            const tags = github.rest.git.listMatchingRefs({
+              owner: owner,
+              repo: repo,
+              ref: `tags/${tag}`
+            });
+            const existing = tags.some(existingTag => existingTag === `refs/tags/${tag}`);
+
+            if (existing) {
+              if (!replace) {
+                core.setFailed(`Given tag ${tag} already exists`);
+                return;
+              }
+              
               github.rest.git.updateRef({
                 owner: owner,
                 repo: repo,
                 ref: `tags/${tag}`,
-                sha: sha,
-                force: true
+                sha: sha
               });
             } else{
               github.rest.git.createRef({
