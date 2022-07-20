@@ -52,7 +52,7 @@ runs:
               core.setFailed(`listMatchingRefs response: ${JSON.stringify(response)}`);
               return;
             }
-            const existing = response.data.some(existingTag => existingTag === `refs/tags/${tag}`);
+            const existing = response.data.some(existingTag => existingTag.ref === `refs/tags/${tag}`);
 
             if (existing) {
               if (!replace) {
