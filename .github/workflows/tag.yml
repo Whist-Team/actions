@@ -1,4 +1,4 @@
-name: Add semver tags on release
+name: 'Add semver tags on release'
 
 on:
   push:
