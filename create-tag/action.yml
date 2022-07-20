@@ -38,8 +38,8 @@ runs:
                 owner: owner,
                 repo: repo,
                 ref: `tags/${tag}`,
-                sha: sha/*,
-                force: true*/
+                sha: sha,
+                force: true
               });
             } else{
               github.rest.git.createRef({
