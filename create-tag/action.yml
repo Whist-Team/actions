@@ -38,10 +38,6 @@ runs:
               repo: repo,
               ref: `tags/${tag}`
             });
-            if (response.status !== 200) {
-              core.setFailed(`listMatchingRefs response: ${JSON.stringify(response)}`);
-              return;
-            }
             console.log(JSON.stringify(tags, null, 4));
             const existing = tags.some(existingTag => existingTag.ref === `refs/tags/${tag}`);
 
