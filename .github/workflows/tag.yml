@@ -39,7 +39,7 @@ jobs:
         with:
           script: |
             try {
-              const {owner, repo} = context.repo();
+              const {owner, repo} = context.repo;
               const major = ${{ steps.version.outputs.major }};
               const minor = ${{ steps.version.outputs.minor }};
               const patch = ${{ steps.version.outputs.patch }};
