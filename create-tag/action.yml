@@ -37,7 +37,8 @@ runs:
               github.rest.git.updateRef({
                 owner: owner,
                 repo: repo,
-                ref: `tags/${tag}`/*,
+                ref: `tags/${tag}`,
+                sha: sha/*,
                 force: true*/
               });
             } else{
