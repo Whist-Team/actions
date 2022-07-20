@@ -5,10 +5,21 @@ inputs:
     description: 'SemVer string'
     required: false
     default: ''
+outputs:
+  major:
+    description: "SemVer major component"
+    value: ${{ steps.version.outputs.major }}
+  minor:
+    description: "SemVer minor component"
+    value: ${{ steps.version.outputs.minor }}
+  patch:
+    description: "SemVer patch component"
+    value: ${{ steps.version.outputs.patch }}
 runs:
   using: composite
   steps:
     - name: 'Extract SemVer components'
+      id: version
       uses: actions/github-script@v6
       with:
         script: |
