@@ -29,24 +29,25 @@ runs:
           try {
             const owner = '${{ inputs.owner }}' || context.repo.owner;
             const repo = '${{ inputs.repo }}' || context.repo.repo;
-            const ref = 'refs/tags/${{ inputs.tag }}';
+            const tag = '${{ inputs.tag }}';
             const sha = '${{ inputs.sha }}';
             const replace = /^true$/i.test('${{ inputs.replace }}');
 
             if (replace) {
-              github.rest.git.deleteRef({
+              github.rest.git.updateRef({
                 owner: owner,
                 repo: repo,
-                ref: ref
+                ref: `tags/${tag}`/*,
+                force: true*/
+              });
+            } else{
+              github.rest.git.createRef({
+                owner: owner,
+                repo: repo,
+                ref: `refs/tags/${tag}`,
+                sha: sha
               });
             }
-
-            github.rest.git.createRef({
-              owner: owner,
-              repo: repo,
-              ref: ref,
-              sha: sha
-            });
           } catch (err) {
             core.setFailed(`Action failed with error ${err}`);
           }
