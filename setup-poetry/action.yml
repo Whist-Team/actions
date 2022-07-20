@@ -1,12 +1,20 @@
 name: 'Setup Python & Poetry'
 description: 'Setups Python & Poetry and then installs all dependencies'
 inputs:
+  checkout:
+    description: 'false if no checkout should be done'
+    required: false
+    default: 'true'
   python-version:
     description: 'Used python version'
     required: true
 runs:
   using: composite
   steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+      if: ${{ inputs.checkout == 'true' }}
+
     - name: Set up Python ${{ inputs.python-version }}
       id: setup-python
       uses: actions/setup-python@v4
