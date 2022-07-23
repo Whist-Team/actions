@@ -7,6 +7,7 @@ inputs:
     default: 'not integtest'
   package:
     description: 'Name of the python package to be tested.'
+    required: true
 runs:
   using: composite
   steps:
