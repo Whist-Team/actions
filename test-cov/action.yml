@@ -4,7 +4,7 @@ inputs:
   test-type:
     description: 'integtest if integration test shall be run'
     required: false
-    default: "not integtest"
+    default: '"not integtest"'
   package:
     description: 'Name of the python package to be tested.'
     required: true
