@@ -1,0 +1,22 @@
+name: 'Test Python Code & Code Coverage Upload'
+description: 'Runs pytest, creates a coverage report and uploads it to code coverage.'
+inputs:
+  test-type:
+    description: 'integtest if integration test shall be run'
+    required: false
+    default: 'not integtest'
+  package:
+    description: 'Name of the python package to be tested.'
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Pytest
+      run: poetry run python -m pytest -m ${{ inputs.test-type }} --cov=${{ inputs.package }} --cov-report=xml
+
+    - name: Upload to codecoverage
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        fail_ci_if_error: true
+        token: ${{ secrets.CODECOV_TOKEN }}
