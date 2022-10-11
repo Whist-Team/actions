@@ -16,7 +16,7 @@ runs:
   steps:
     - name: Pytest
       shell: bash
-      run: 'poetry run python -m pytest -m "${{ inputs.test-type }}" --cov=${{ inputs.package }} --cov-report=xml --cov-config=.coveragerc'
+      run: 'poetry run python -m pytest -m "${{ inputs.test-type }}" --cov=${{ inputs.package }} --cov-report=xml'
 
     - name: Upload to codecoverage
       uses: codecov/codecov-action@v3
