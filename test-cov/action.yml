@@ -4,7 +4,7 @@ inputs:
   test-type:
     description: 'integtest if integration test shall be run'
     required: false
-    default: 'not integtest'
+    default: "not integtest"
   package:
     description: 'Name of the python package to be tested.'
     required: true
@@ -20,7 +20,7 @@ runs:
   steps:
     - name: Pytest
       shell: bash
-      run: 'poetry run python -m pytest -m "${{ inputs.test-type }}" --cov=${{ inputs.package }} --cov-report=xml --cov-config=${{ input.coverage-files }}'
+      run: 'poetry run python -m pytest -m ${{ inputs.test-type }} --cov=${{ inputs.package }} --cov-report=xml --cov-config=${{ input.coverage-files }}'
 
     - name: Upload to codecoverage
       uses: codecov/codecov-action@v3
