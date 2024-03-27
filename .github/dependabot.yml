@@ -9,3 +9,19 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+  - package-ecosystem: "github-actions"
+    directory: "/create-tag"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "github-actions"
+    directory: "/extract-semver"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "github-actions"
+    directory: "/setup-poetry"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "github-actions"
+    directory: "/test-cov"
+    schedule:
+      interval: "daily"
