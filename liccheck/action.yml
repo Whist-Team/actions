@@ -1,0 +1,52 @@
+name: 'License Checker'
+description: 'Checks the licenses of the dependencies if they are compliant.'
+inputs:
+  strategy:
+    description: 'The path to the strategy file.'
+    required: 'true'
+  python-version:
+    description: 'Used python version'
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Set up Python ${{ inputs.python-version }}
+      id: setup-python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Install poetry
+      uses: snok/install-poetry@v1
+      with:
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+
+    - name: Load cached venv
+      uses: actions/cache@v3
+      with:
+        path: .venv
+        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+
+    - name: Install dependencies
+      shell: bash
+      run: poetry install --no-interaction
+
+    - name: Install liccheck
+      shell: bash
+      run: poetry add --group=dev liccheck --no-interaction
+
+    - name: Freeze Dependencies
+      shell: bash
+      run: poetry export --without-hashes --format=requirements.txt > requirements.txt
+
+    - name: Check Licenses
+      shell: bash
+      id: license-check
+      run: |
+        echo "AUTHORIZED_PACKAGES=$(poetry run liccheck -s .liccheck.ini -r requirements.txt | grep -A 1 "check authorized packages" | grep -vE "packages...")" >> "$GITHUB_OUTPUT"
+        echo "UNKNOW_PACKAGES=$(poetry run liccheck -s .liccheck.ini -r requirements.txt | grep -A 1 "check unknown package"s | grep -vE "packages...")" >> "$GITHUB_OUTPUT"
+        echo "UNAUTHORIZED_PACKAGES=$(poetry run liccheck -s .liccheck.ini -r requirements.txt | grep -A 1 "check unauthorized packages" | grep -vE "packages...")" >> "$GITHUB_OUTPUT"
