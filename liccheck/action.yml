@@ -58,8 +58,7 @@ runs:
           if (${{ steps.license-check.outputs.UNAUTHORIZED_PACKAGES }} > 0) {
               core.setFailed('${{ steps.license-check.outputs.UNAUTHORIZED_PACKAGES }} unauthorized packages found.');
           }
-
-
+          
     - name: License Unknown
       uses: actions/github-script@v7
       if: ${{ steps.license-check.outputs.UNKNOWN_PACKAGES != '' }}
