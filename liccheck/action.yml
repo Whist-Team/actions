@@ -47,7 +47,7 @@ runs:
       id: license-check
       run: |
         echo "AUTHORIZED_PACKAGES=$(poetry run liccheck -s ${{ inputs.strategy }} -r requirements.txt | grep -A 1 "check authorized packages" | grep -vE "packages..." | grep -oP "^\S+")" >> "$GITHUB_OUTPUT"
-        echo "UNKNOW_PACKAGES=$(poetry run liccheck -s .${{ inputs.strategy }} -r requirements.txt | grep -A 1 "check unknown packages" | grep -vE "packages..." | grep -oP "^\S+")" >> "$GITHUB_OUTPUT"
+        echo "UNKNOWN_PACKAGES=$(poetry run liccheck -s .${{ inputs.strategy }} -r requirements.txt | grep -A 1 "check unknown packages" | grep -vE "packages..." | grep -oP "^\S+")" >> "$GITHUB_OUTPUT"
         echo "UNAUTHORIZED_PACKAGES=$(poetry run liccheck -s ${{ inputs.strategy }} -r requirements.txt | grep -A 1 "check unauthorized packages" | grep -vE "packages..." | grep -oP "^\S+")" >> "$GITHUB_OUTPUT"
 
     - name: License Unauthorized
@@ -62,10 +62,8 @@ runs:
 
     - name: License Unknown
       uses: actions/github-script@v7
-      if: ${{ steps.license-check.outputs.UNKNOW_PACKAGES != '' }}
-      env:
-        UNKNOWN: ${{ steps.license-check.outputs.UNKNOWN_PACKAGES }}
+      if: ${{ steps.license-check.outputs.UNKNOWN_PACKAGES != '' }}
       with:
         script: |
-          if (${{steps.license-check.outputs.UNKNOW_PACKAGES}} > 0) {
-              core.warning('${{steps.license-check.outputs.UNKNOW_PACKAGES}} unknown packages found.');
+          if (${{steps.license-check.outputs.UNKNOWN_PACKAGES}} > 0) {
+              core.warning('${{steps.license-check.outputs.UNKNOWN_PACKAGES}} unknown packages found.');
