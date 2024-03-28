@@ -25,3 +25,7 @@ updates:
     directory: "/test-cov"
     schedule:
       interval: "daily"
+  - package-ecosystem: "github-actions"
+    directory: "/liccheck"
+    schedule:
+      interval: "daily"
